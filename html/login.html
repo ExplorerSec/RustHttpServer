@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script>
+        function postLogin() {
+            // 定义请求的URL和数据
+            const url = '/login';
+            const e_div = document.querySelector(".user-and-password");
+            if (e_div) {
+                const e_usr = e_div.querySelector("input[name='user']");
+                const e_pwd = e_div.querySelector("input[name='pwd']");
+
+                const data = {
+                    user: e_usr.value,
+                    password: e_pwd.value,
+                };
+
+                // 发送POST请求
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => {
+                        if(response.status == 200){
+                            e_usr.value = null;
+                            e_pwd.value = null;
+                            alert("OK!");
+                        }
+                        else{
+                            alert("Failed!");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        alert("Error!");
+                    });
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h2>Please input your name and password.</h2>
+    <div class="user-and-password">
+        <input type="text" id="user" name="user" placeholder="User">
+        <br>
+        <input type="password" id="pwd" name="pwd" placeholder="Password">
+        <br>
+        <button onclick="postLogin()">Login</button>
+    </div>
+</body>
+
+</html>
