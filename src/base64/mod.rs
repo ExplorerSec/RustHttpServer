@@ -1,3 +1,5 @@
+#![allow(dead_code)] // 取消这个子模块中的 dead_code 警告 //#![allow(warnings)] 
+
 use std::collections::HashMap;
 
 mod codec_crypto;

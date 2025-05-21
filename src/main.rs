@@ -9,8 +9,10 @@ use std::{net::TcpListener, sync::Arc};
 mod easy_auth;
 use easy_auth::new_auth;
 
+mod base64;
+
 fn main() {
-    let auth = new_auth();
+    let auth = new_auth("data/account.ini");
 
     let addr = "127.0.0.1:17788";
     let pool = ThreadPool::new(4);
