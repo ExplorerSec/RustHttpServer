@@ -25,13 +25,14 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(data)
+                    body: String(data.user) + "~" + String(data.password) //JSON.stringify(data)
                 })
                     .then(response => {
                         if(response.status == 200){
                             e_usr.value = null;
                             e_pwd.value = null;
                             alert("OK!");
+                            window.location.href = "/user";
                         }
                         else{
                             alert("Failed!");
