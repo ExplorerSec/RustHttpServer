@@ -66,6 +66,11 @@ impl AuthInner {
     }
     // 账号登录验证
     pub fn auth_accounts(&self, usr: String, pwd: String) -> Result<(), AuthError> {
+        #[cfg(debug_assertions)]{
+            println!("Login auth_accounts:");
+            println!("---> user:{}",usr);
+            println!("---> pwd: {}",pwd);
+        }
         if let Some(password) = self.user_password.get(&usr) {
             if pwd == *password {
                 Ok(())
