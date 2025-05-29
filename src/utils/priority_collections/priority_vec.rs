@@ -4,16 +4,17 @@ use std::cmp::Reverse;
 use std::collections::{BinaryHeap, HashMap};
 use std::hash::Hash;
 
-struct PriorityMap<C: Ord + Copy + Hash, T> {
+// 仿优先队列的 Vec，相同权重的元素自动按先后顺序放到权重对应 Vec 中
+struct PriorityVec<C: Ord + Copy + Hash, T> {
     idx_len: usize, // 索引权重数
     val_len: usize, // 实际内容数，即所有 Vec 内的元素数目和
     index_s: BinaryHeap<Reverse<C>>,
     content_s: HashMap<C, Vec<T>>,
 }
 
-impl<C: Ord + Copy + Hash, T> PriorityMap<C, T> {
-    fn new() -> PriorityMap<C, T> {
-        PriorityMap {
+impl<C: Ord + Copy + Hash, T> PriorityVec<C, T> {
+    fn new() -> PriorityVec<C, T> {
+        PriorityVec {
             idx_len: 0,
             val_len: 0,
             index_s: BinaryHeap::<Reverse<C>>::new(),
@@ -64,36 +65,39 @@ impl<C: Ord + Copy + Hash, T> PriorityMap<C, T> {
 
 #[cfg(test)]
 mod test {
-    use super::PriorityMap;
+    use super::PriorityVec;
+
     #[test]
-    fn prioritymap_empty_len_insert() {
-        let mut pm = PriorityMap::<i128, String>::new();
-        assert!(pm.is_empty() == true);
-        assert!(pm.len_idx() == 0);
-        assert!(pm.len_val() == 0);
-        pm.insert(1, "Hello".to_string());
-        assert!(pm.is_empty() == false);
-        assert!(pm.len_idx() == 1);
-        assert!(pm.len_val() == 1);
-        pm.insert(2, "Tmp".to_string());
-        assert!(pm.len_idx() == 2);
-        assert!(pm.len_val() == 2);
-        pm.insert(1, "W".to_string());
-        assert!(pm.len_idx() == 2);
-        assert!(pm.len_val() == 3);
+    fn priority_vec_empty_len_insert() {
+        let mut pv = PriorityVec::<i128, String>::new();
+        assert!(pv.is_empty() == true);
+        assert!(pv.len_idx() == 0);
+        assert!(pv.len_val() == 0);
+        assert!(pv.peek() == None);
+        assert!(pv.pop() == None);
+        pv.insert(1, "Hello".to_string());
+        assert!(pv.is_empty() == false);
+        assert!(pv.len_idx() == 1);
+        assert!(pv.len_val() == 1);
+        pv.insert(2, "Tmp".to_string());
+        assert!(pv.len_idx() == 2);
+        assert!(pv.len_val() == 2);
+        pv.insert(1, "W".to_string());
+        assert!(pv.len_idx() == 2);
+        assert!(pv.len_val() == 3);
     }
     #[test]
-    fn prioritymap_insert_peek_pop() {
-        let mut pm = PriorityMap::<usize, char>::new();
-        pm.insert(5, 'a');
-        pm.insert(7, 'b');
-        pm.insert(5, 'c');
-        pm.insert(6, 'd');
-        assert!(pm.peek() == Some(&vec!('a', 'c')));
-        assert!(pm.pop()==Some(vec!('a', 'c')));
-        assert!(pm.pop()==Some(vec!('d')));
-        assert!(pm.peek()==Some(&vec!('b')));
-        assert!(pm.pop()==Some(vec!('b')));
-        assert!(pm.pop()==None);
+    fn priority_vec_insert_peek_pop() {
+        let mut pv = PriorityVec::<usize, char>::new();
+        pv.insert(5, 'a');
+        pv.insert(7, 'b');
+        pv.insert(5, 'c');
+        pv.insert(6, 'd');
+        assert!(pv.peek() == Some(&vec!('a', 'c')));
+        assert!(pv.pop() == Some(vec!('a', 'c')));
+        assert!(pv.pop() == Some(vec!('d')));
+        assert!(pv.peek() == Some(&vec!('b')));
+        assert!(pv.pop() == Some(vec!('b')));
+        assert!(pv.pop() == None);
     }
 }
