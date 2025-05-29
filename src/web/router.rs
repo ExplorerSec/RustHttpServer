@@ -1,4 +1,4 @@
-use crate::easy_auth::Auth;
+use crate::web::easy_auth::Auth;
 
 use core::str;
 use std::{collections::HashMap, fs, io::prelude::*, net::TcpStream, thread, time::Duration};

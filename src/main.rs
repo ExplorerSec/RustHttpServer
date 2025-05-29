@@ -1,15 +1,11 @@
-mod thread_pool;
-use thread_pool::ThreadPool;
-
-mod router;
-use router::handle_stream;
-
 use std::{net::TcpListener, sync::Arc};
 
-mod easy_auth;
-use easy_auth::new_auth;
+mod utils;
+use utils::thread_pool::ThreadPool;
 
-mod base64;
+mod web;
+use web::router::handle_stream;
+use web::easy_auth::new_auth;
 
 fn main() {
     let auth = new_auth("data/account.ini");

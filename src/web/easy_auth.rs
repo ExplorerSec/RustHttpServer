@@ -1,4 +1,4 @@
-use crate::base64;
+use crate::utils::base64;
 use base64::Base64Codec;
 
 use std::{

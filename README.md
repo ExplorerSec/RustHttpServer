@@ -1,5 +1,5 @@
-# RustHttpServer 0.1
+# RustHttpServer 0.2.7
 
-A very simple multi-threaded HTTP server example.
+A simple authentication thread pool HTTP server
 
-一个非常简单的多线程 Http 服务器示例。
+一个带有简单鉴权的线程池 HTTP 服务器
