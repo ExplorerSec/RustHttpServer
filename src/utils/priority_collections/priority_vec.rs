@@ -5,7 +5,7 @@ use std::collections::{BinaryHeap, HashMap};
 use std::hash::Hash;
 
 // 仿优先队列的 Vec，相同权重的元素自动按先后顺序放到权重对应 Vec 中
-struct PriorityVec<C: Ord + Copy + Hash, T> {
+pub struct PriorityVec<C: Ord + Copy + Hash, T> {
     idx_len: usize, // 索引权重数
     val_len: usize, // 实际内容数，即所有 Vec 内的元素数目和
     index_s: BinaryHeap<Reverse<C>>,
@@ -13,7 +13,7 @@ struct PriorityVec<C: Ord + Copy + Hash, T> {
 }
 
 impl<C: Ord + Copy + Hash, T> PriorityVec<C, T> {
-    fn new() -> PriorityVec<C, T> {
+    pub fn new() -> PriorityVec<C, T> {
         PriorityVec {
             idx_len: 0,
             val_len: 0,
@@ -21,16 +21,16 @@ impl<C: Ord + Copy + Hash, T> PriorityVec<C, T> {
             content_s: HashMap::<C, Vec<T>>::new(),
         }
     }
-    fn is_empty(&self) -> bool {
+    pub fn is_empty(&self) -> bool {
         self.idx_len == 0
     }
-    fn len_idx(&self) -> usize {
+    pub fn len_idx(&self) -> usize {
         self.idx_len
     }
-    fn len_val(&self) -> usize {
+    pub fn len_val(&self) -> usize {
         self.val_len
     }
-    fn insert(&mut self, weight: C, val: T) {
+    pub fn insert(&mut self, weight: C, val: T) {
         // 测试发现 BinaryHeap 重复 push 会增加 len
         match self.content_s.get_mut(&weight) {
             Some(val_vec) => {
@@ -44,13 +44,13 @@ impl<C: Ord + Copy + Hash, T> PriorityVec<C, T> {
         }
         self.val_len += 1;
     }
-    fn peek(&self) -> Option<&Vec<T>> {
+    pub fn peek(&self) -> Option<&Vec<T>> {
         match self.index_s.peek() {
             None => None,
             Some(Reverse(weight)) => self.content_s.get(weight),
         }
     }
-    fn pop(&mut self) -> Option<Vec<T>> {
+    pub fn pop(&mut self) -> Option<Vec<T>> {
         match self.index_s.pop() {
             None => None,
             Some(Reverse(weight)) => {

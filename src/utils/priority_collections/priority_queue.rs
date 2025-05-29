@@ -5,7 +5,7 @@ use std::collections::{BinaryHeap, HashMap, VecDeque};
 use std::hash::Hash;
 
 // 优先队列，允许相同元素，权重相同时先入先出
-struct PriorityQueue<C: Ord + Copy + Hash, T> {
+pub struct PriorityQueue<C: Ord + Copy + Hash, T> {
     idx_len: usize, // 索引权重数
     val_len: usize, // 实际内容数，即所有 Vec 内的元素数目和
     index_s: BinaryHeap<Reverse<C>>,
@@ -13,7 +13,7 @@ struct PriorityQueue<C: Ord + Copy + Hash, T> {
 }
 
 impl<C: Ord + Copy + Hash, T> PriorityQueue<C, T> {
-    fn new() -> PriorityQueue<C, T> {
+    pub fn new() -> PriorityQueue<C, T> {
         PriorityQueue {
             idx_len: 0,
             val_len: 0,
@@ -21,13 +21,13 @@ impl<C: Ord + Copy + Hash, T> PriorityQueue<C, T> {
             content_s: HashMap::<C, VecDeque<T>>::new(),
         }
     }
-    fn is_empty(&self) -> bool {
+    pub fn is_empty(&self) -> bool {
         self.idx_len == 0
     }
-    fn len(&self) -> usize {
+    pub fn len(&self) -> usize {
         self.val_len
     }
-    fn insert(&mut self, weight: C, val: T) {
+    pub fn insert(&mut self, weight: C, val: T) {
         // 测试发现 BinaryHeap 重复 push 会增加 len
         match self.content_s.get_mut(&weight) {
             Some(val_vec) => {
@@ -41,7 +41,7 @@ impl<C: Ord + Copy + Hash, T> PriorityQueue<C, T> {
         }
         self.val_len += 1;
     }
-    fn peek(&self) -> Option<&T> {
+    pub fn peek(&self) -> Option<&T> {
         match self.index_s.peek() {
             None => None,
             Some(Reverse(weight)) => {
@@ -50,7 +50,7 @@ impl<C: Ord + Copy + Hash, T> PriorityQueue<C, T> {
             }
         }
     }
-    fn pop(&mut self) -> Option<T> {
+    pub fn pop(&mut self) -> Option<T> {
         match self.index_s.peek() {
             None => None,
             Some(Reverse(weight)) => {

@@ -5,31 +5,31 @@ use std::collections::{BinaryHeap, HashMap};
 use std::hash::Hash;
 
 // 集合型-优先队列，不允许相同权重的元素
-struct PrioritySet<C: Ord + Copy + Hash, T> {
+pub struct PrioritySet<C: Ord + Copy + Hash, T> {
     index_s: BinaryHeap<Reverse<C>>,
     content_s: HashMap<C, T>,
 }
 
 impl<C: Ord + Copy + Hash, T> PrioritySet<C, T> {
-    fn new() -> PrioritySet<C, T> {
+    pub fn new() -> PrioritySet<C, T> {
         PrioritySet {
             index_s: BinaryHeap::<Reverse<C>>::new(),
             content_s: HashMap::<C, T>::new(),
         }
     }
-    fn is_empty(&self) -> bool {
+    pub fn is_empty(&self) -> bool {
         self.index_s.is_empty()
     }
-    fn len(&self) -> usize {
+    pub fn len(&self) -> usize {
         self.index_s.len()
     }
-    fn insert_or_update(&mut self, weight: C, val: T) {
+    pub fn insert_or_update(&mut self, weight: C, val: T) {
         // BinaryHeap 重复 push 会增加 len，但 HashMap insert 是插入或更新，返回 None 表示插入
         if self.content_s.insert(weight, val).is_none() {
             self.index_s.push(Reverse(weight));
         }
     }
-    fn insert_only(&mut self, weight: C, val: T) -> bool {
+    pub fn insert_only(&mut self, weight: C, val: T) -> bool {
         match self.content_s.contains_key(&weight) {
             false => {
                 self.index_s.push(Reverse(weight));
@@ -39,7 +39,7 @@ impl<C: Ord + Copy + Hash, T> PrioritySet<C, T> {
             true => false,
         }
     }
-    fn update_only(&mut self, weight: C, val: T) -> bool {
+    pub fn update_only(&mut self, weight: C, val: T) -> bool {
         match self.content_s.get_mut(&weight) {
             None => false,
             Some(v) => {
@@ -48,13 +48,13 @@ impl<C: Ord + Copy + Hash, T> PrioritySet<C, T> {
             }
         }
     }
-    fn peek(&self) -> Option<&T> {
+    pub fn peek(&self) -> Option<&T> {
         match self.index_s.peek() {
             None => None,
             Some(Reverse(weight)) => self.content_s.get(weight),
         }
     }
-    fn pop(&mut self) -> Option<T> {
+    pub fn pop(&mut self) -> Option<T> {
         match self.index_s.pop() {
             None => None,
             Some(Reverse(weight)) => self.content_s.remove(&weight),
