@@ -19,7 +19,7 @@ pub struct AuthInner {
 
 impl AuthInner {
     // 创建账号表 账号-口令密码
-    pub fn new() -> AuthInner {
+    pub fn new() -> AuthInner{
         AuthInner {
             user_password: HashMap::new(),
         }
@@ -32,7 +32,7 @@ impl AuthInner {
         self.user_password.insert(s_usr, s_pwd);
     }*/
     // 加载本地账号密码文件
-    fn load_local_account_map<P: AsRef<Path>>(&mut self, path: P) -> usize {
+    pub fn load_local_account_map<P: AsRef<Path>>(&mut self, path: P) -> usize {
         if let Ok(content) = fs::read_to_string(path) {
             let cc = Base64Codec::web_default();
             let lines = content.split('\n');
@@ -92,9 +92,10 @@ impl AuthInner {
     }
 }
 
-pub type Auth = Arc<Mutex<AuthInner>>;
 
-pub fn new_auth<P: AsRef<Path>>(path: P) -> Auth {
+pub type ArcAuth = Arc<Mutex<AuthInner>>;
+
+pub fn new_auth<P: AsRef<Path>>(path: P) -> ArcAuth {
     let mut auth_inner = AuthInner::new();
     //auth_inner.init_test_accounts_map();
     auth_inner.load_local_account_map(path);
